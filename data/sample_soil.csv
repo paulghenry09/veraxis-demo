@@ -1,0 +1,13 @@
+timestamp,location,ph_level,moisture_pct,nitrogen_ppm,phosphorus_ppm,verified_contributor,source
+2026-01-01 06:00,Laikipia,6.2,34.1,18.4,12.1,C001,sensor_010
+2026-01-01 06:00,Nakuru,5.8,41.2,22.1,9.8,C002,sensor_011
+2026-01-01 06:00,Eldoret,6.5,38.7,19.9,11.4,C003,sensor_012
+2026-01-01 07:00,Laikipia,6.3,33.8,18.1,12.3,C001,sensor_010
+2026-01-01 07:00,Nakuru,5.9,40.9,21.8,10.1,C002,sensor_011
+2026-01-01 07:00,Eldoret,6.4,39.1,20.2,11.2,C003,sensor_012
+2026-01-01 08:00,Laikipia,6.2,33.5,17.9,12.5,C001,sensor_010
+2026-01-01 08:00,Nakuru,6.0,40.5,21.5,10.4,C002,sensor_011
+2026-01-01 08:00,Eldoret,6.6,39.4,20.5,11.0,C003,sensor_012
+2026-01-01 09:00,Laikipia,6.1,33.2,17.7,12.7,C001,sensor_010
+2026-01-01 09:00,Nakuru,6.0,40.2,21.2,10.6,C002,sensor_011
+2026-01-01 09:00,Eldoret,6.7,39.8,20.8,10.8,C003,sensor_012

@@ -1,0 +1,11 @@
+contributor_id,region,task_type,signal_count,verified,timestamp
+C001,Nairobi,weather_observation,12,true,2026-01-01 06:00
+C002,Lagos,soil_reading,8,true,2026-01-01 06:15
+C003,Dhaka,humidity_check,15,true,2026-01-01 06:30
+C004,Jakarta,rainfall_log,6,true,2026-01-01 07:00
+C005,Kampala,temperature_log,11,true,2026-01-01 07:15
+C006,Accra,weather_observation,9,true,2026-01-01 07:30
+C007,Mumbai,soil_reading,14,true,2026-01-01 08:00
+C008,Cairo,humidity_check,7,true,2026-01-01 08:15
+C009,Bogota,rainfall_log,10,true,2026-01-01 08:30
+C010,Manila,temperature_log,13,true,2026-01-01 09:00

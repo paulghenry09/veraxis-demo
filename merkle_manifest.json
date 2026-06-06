@@ -1,0 +1,10 @@
+{
+  "dataset": "veraxis-demo-v1",
+  "merkle_root": "15d82f1718dce9fb85f9661079d6078cd3a61f2efc8aef12cb9e74671f076915",
+  "file_count": 3,
+  "file_hashes": {
+    "sample_contributors.csv": "fcc939be9792208986b4b11a3b6d1064d44a947dea93f6bcd9dec032f59a49db",
+    "sample_soil.csv": "bd649f5c60541a12eb35dc2222816ec775858fab265086149da08e8920e2178d",
+    "sample_weather.csv": "77adc909882ceafad9ae5e7c426941bb84478975006866d7133374d3e0eb949a"
+  }
+}

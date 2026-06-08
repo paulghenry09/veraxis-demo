@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veraxis TSR Verifier</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#050508;--teal:#00d4a8;--border:rgba(255,255,255,0.06);--text:#e4e6f0;--muted:#5a5c70;--surface:#0e0e18}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'JetBrains Mono',monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px}
+  .logo{font-size:11px;letter-spacing:4px;color:var(--teal);text-transform:uppercase;margin-bottom:48px}
+  h1{font-size:clamp(24px,4vw,40px);font-weight:300;color:#fff;text-align:center;margin-bottom:12px}
+  .sub{color:var(--muted);font-size:12px;text-align:center;margin-bottom:48px;max-width:500px}
+  .box{width:100%;max-width:680px;background:var(--surface);border:1px solid var(--border);padding:32px}
+  label{font-size:11px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;display:block;margin-bottom:10px}
+  input{width:100%;background:#050508;border:1px solid var(--border);color:var(--text);padding:14px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;outline:none;transition:border 0.2s}
+  input:focus{border-color:var(--teal)}
+  button{width:100%;margin-top:16px;background:var(--teal);color:#000;border:none;padding:14px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-weight:500;transition:all 0.2s}
+  button:hover{background:#00f0c0}
+  button:disabled{background:var(--muted);cursor:not-allowed}
+  #result{margin-top:24px;display:none}
+  .result-ok{border:1px solid var(--teal);background:rgba(0,212,168,0.06);padding:24px}
+  .result-err{border:1px solid #ff6b6b;background:rgba(255,107,107,0.06);padding:24px}
+  .tag{font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px}
+  .tag-ok{color:var(--teal)}
+  .tag-err{color:#ff6b6b}
+  .row{display:flex;gap:12px;margin-bottom:8px;flex-wrap:wrap}
+  .key{color:var(--muted);font-size:11px;min-width:120px}
+  .val{color:#fff;font-size:12px;word-break:break-all}
+  .hash{color:var(--teal);font-size:11px;word-break:break-all}
+  .back{display:block;margin-top:32px;color:var(--muted);font-size:11px;text-align:center;text-decoration:none;letter-spacing:2px}
+  .back:hover{color:var(--teal)}
+  .demo-id{margin-top:16px;font-size:11px;color:var(--muted);text-align:center}
+  .demo-id span{color:var(--teal);cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+
+<div class="logo">VERAXIS · TSR VERIFIER</div>
+<h1>Verify a Training Signal Receipt</h1>
+<p class="sub">Enter a TSR ID to independently verify a dataset attestation. No Veraxis account required.</p>
+
+<div class="box">
+  <label>Training Signal Receipt ID</label>
+  <input type="text" id="tsrInput" placeholder="e.g. d45f1485-e1d5-42a9-9ad1-8c340c4e968b" />
+  <button onclick="verify()" id="btn">Verify →</button>
+  <div class="demo-id">Try the first TSR: <span onclick="document.getElementById('tsrInput').value='d45f1485-e1d5-42a9-9ad1-8c340c4e968b'">d45f1485-e1d5-42a9-9ad1-8c340c4e968b</span></div>
+</div>
+
+<div id="result"></div>
+
+<a href="https://veraxis-ai.vercel.app" class="back">← Back to Veraxis</a>
+
+<script>
+async function verify() {
+  const id = document.getElementById('tsrInput').value.trim();
+  const btn = document.getElementById('btn');
+  const result = document.getElementById('result');
+
+  if (!id) { alert('Please enter a TSR ID'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Verifying...';
+  result.style.display = 'none';
+
+  try {
+    const res = await fetch(`https://veraxis-tsr.cgh254shotta.workers.dev/verify/${id}`);
+    const data = await res.json();
+
+    if (!res.ok || data.error) {
+      result.innerHTML = `
+        <div class="result-err">
+          <div class="tag tag-err">✗ TSR NOT FOUND</div>
+          <div class="row"><span class="key">TSR ID</span><span class="val">${id}</span></div>
+          <div class="row"><span class="key">Status</span><span class="val">No record found in ledger</span></div>
+        </div>`;
+    } else {
+      result.innerHTML = `
+        <div class="result-ok">
+          <div class="tag tag-ok">✓ TSR VERIFIED</div>
+          <div class="row"><span class="key">TSR ID</span><span class="val">${data.tsr_id}</span></div>
+          <div class="row"><span class="key">Dataset</span><span class="val">${data.dataset_id}</span></div>
+          <div class="row"><span class="key">Issued</span><span class="val">${data.issued_at}</span></div>
+          <div class="row"><span class="key">Issuer</span><span class="val">${data.issuer}</span></div>
+          <div class="row"><span class="key">Status</span><span class="val">${data.status}</span></div>
+          <div class="row"><span class="key">Merkle Root</span><span class="hash">${data.merkle_root}</span></div>
+        </div>`;
+    }
+    result.style.display = 'block';
+  } catch(e) {
+    result.innerHTML = `<div class="result-err"><div class="tag tag-err">✗ ERROR</div><div class="row"><span class="val">${e.message}</span></div></div>`;
+    result.style.display = 'block';
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Verify →';
+}
+
+document.getElementById('tsrInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') verify();
+});
+</script>
+</body>
+</html>
